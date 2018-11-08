@@ -94,6 +94,7 @@ class Panel extends JPanel implements Runnable, KeyListener {
                 paintBall(g);
                 // 画出暂停图标
                 this.paintPause(g);
+                break;
             case OVER:
                 g.drawImage(this.overTextImage,
                         (this.getWidth() - this.overTextImage.getWidth(null)) / 2,
