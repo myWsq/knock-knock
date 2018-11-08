@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -11,25 +12,32 @@ class Ball {
     private static final int MAX_SPEED = 10; // 球的最快速度
     private int speedXSeed; // 速度种子
     private int speedYSeed;
-
-    int speedX = 1; // X轴速度
-    int speedY = 1; // Y轴速度
+    private int originSize;
+    private boolean sizeFlag = true;
+    Image image;
+    private int speedX = 1; // X轴速度
+    private int speedY = 1; // Y轴速度
     int size; // 球的大小
+
     int knockXTimes = 1; // 碰撞两边次数
     int knockYTimes = 1; // 碰撞上下次数
-    int x = -size;
-    int y = -size;
+    int x;
+    int y;
 
 
-    Ball() {
+    Ball(Image image) {
         Random r = new Random();
         // size 为 30 - 100
         this.size = 30 + r.nextInt(100);
+        this.x = -this.size;
+        this.y = -this.size;
+        this.originSize = this.size;
 
         // 初始 seed 为 1 - 5;
         this.speedXSeed = 1 + r.nextInt(5);
         this.speedYSeed = 1 + r.nextInt(5);
         this.getSpeed();
+        this.image = image;
     }
 
     /**
@@ -78,6 +86,21 @@ class Ball {
         // 移动
         this.x += this.speedX;
         this.y += this.speedY;
+
+        // 移动的时候有放大缩小的效果
+        if (this.sizeFlag && this.size < this.originSize + 5) {
+            // 处于放大过程, 且未到最大值
+            this.size++;
+        } else if (this.sizeFlag && this.size >= this.originSize + 5) {
+            // 处于放大过程且达到了最大值
+            this.sizeFlag = !this.sizeFlag;
+        } else if (!this.sizeFlag && this.size > this.originSize - 5) {
+            // 处于缩小过程且未达到最小值
+            this.size--;
+        } else if (!this.sizeFlag && this.size <= this.originSize - 5) {
+            this.sizeFlag = !this.sizeFlag;
+        }
+
     }
 
 
